@@ -5,26 +5,51 @@ const state = {
       umur: '20',
       jabatan: 'Staff',
       divisi: 'HRD',
+      idProv: 1,
+      idKota: 1,
+      idKecamatan: 1,
+      Provinsi: "Jawa Barat",
+      Kota: "Bandung",
+      Kecamatan: "Soreang",
     },
-    {
-      nama: 'samsul gas',
-      umur: '21',
-      jabatan: 'Staff',
-      divisi: 'IT',
-    },
-    {
-      nama: 'nurdin kopyor',
-      umur: '22',
-      jabatan: 'Staff',
-      divisi: 'IT',
-    },
-    {
-      nama: 'budi semangka',
-      umur: '23',
-      jabatan: 'Manager',
-      divisi: 'Operasional',
-    },
-  ],
+    // {
+    //   nama: 'samsul gas',
+    //   umur: '21',
+    //   jabatan: 'Staff',
+    //   divisi: 'HRD',
+    //   idProv: 2,
+    //   idKota: 1,
+    //   idKecamatan: 1,
+    //   Provinsi: "Jawa Tengah",
+    //   Kota: "Sragen",
+    //   Kecamatan: "Desa Kidul",
+    // },
+    // {
+    //   nama: 'nurdin koyor',
+    //   umur: '22',
+    //   jabatan: 'Staff',
+    //   divisi: 'IT',
+    //   idProv: 3,
+    //   idKota: 1,
+    //   idKecamatan: 1,
+    //   Provinsi: "Jawa Timur",
+    //   Kota: "Pacitan",
+    //   Kecamatan: "Desa Rejo",
+    // },
+    // {
+    //   nama: 'budi semangka',
+    //   umur: '23',
+    //   jabatan: 'Manager',
+    //   divisi: 'Operasional',
+    //   idProv: 4,
+    //   idKota: 1,
+    //   idKecamatan: 1,
+    //   Provinsi: "DKI Jakarta",
+    //   Kota: "Jakarta Selatan",
+    //   Kecamatan: "Tambora",
+    // },
+    
+],
 
 }
 
@@ -54,21 +79,16 @@ const actions = {
     })
   },
 
-  actionhapusdata({ commit, state }, payload) {
-    return new Promise(async (resolve, reject) => {
-      console.log('line 58 jalan')
-      if (confirm("anda yakin") == true) {
-        console.log('line61')
-        const datahapus = state.datakaryawan;
-        datahapus.splice(payload, 1)
-        commit('hapusdataMutation', datahapus)
-        console.log(state.datakaryawan.length)
-        resolve()
-      } else  {
-        reject('ada yang ga beres')
-      }
+  actionhapusdata({ commit }, payload) {
+    return new Promise((resolve, reject) => {
+        try {
+            commit('hapusProvinsiMutation', payload)
+            resolve(1)
+        } catch (error) {
+            reject(0)
+        }
     })
-  },
+},
 
 
   actionupdatedata({ commit, state }, payload) {
@@ -137,7 +157,7 @@ const actions = {
           console.log('tampil line 85')
           const dataedit = state.datajabatan
           console.log('tampil line 88')
-          const updatedata = Object.assign(dataedit[payload.index], payload.dataedit, item)
+          const updatedata = Object.assign(dataedit[payload.index], payload.dataedit)
           console.log(dataedit)
           //console.log(dataedit)
           commit('updatelistjabatanMutation', dataedit)
@@ -215,8 +235,8 @@ const mutations = {
     state.datakaryawan.push(payload)
   },
 
-  hapusdataMutation(state, payload) {
-    state.datakaryawan = payload
+  hapusProvinsiMutation(state, payload) {
+    state.datakaryawan.splice (payload, 1)
   },
 
   updatelistMutation(state, payload) {

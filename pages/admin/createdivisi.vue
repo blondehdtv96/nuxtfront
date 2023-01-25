@@ -74,7 +74,7 @@
   export default {
     computed: {
       ddivisiall() {
-        return this.$store.getters["CrudkaryawanStore/gettersdatadivisi"];
+        return this.$store.getters["CruddivisiStore/gettersdatadivisi"];
       },
     },
   
@@ -115,7 +115,7 @@
   
       async tambahdata() {
         //console.log("masuk152");
-        this.$store.dispatch("CrudkaryawanStore/actiontambahdatadivisi", this.databaru);
+        this.$store.dispatch("CruddivisiStore/actiontambahdata", this.databaru);
         //console.log('masuk154')
         //console.log('dibawah return 155')
         this.databaru = {
@@ -125,7 +125,7 @@
       },
   
       hapusdata(index1) {
-        this.$store.dispatch("CrudkaryawanStore/actionhapusdatadivisi", index1);
+        this.$store.dispatch("CruddivisiStore/actionhapusdata", index1);
       },
   
       editdatadivisi(data, index) {
@@ -140,7 +140,7 @@
           index: this.indexedit,
           dataedit: this.editdata,
         };
-       this.$store.dispatch("CrudkaryawanStore/actionupdatedatadivisi", updatedata);
+       this.$store.dispatch("CruddivisiStore/actionupdatedatadivisi", updatedata);
         this.dialogedit = false;
       },
     },

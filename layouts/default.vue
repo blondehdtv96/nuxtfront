@@ -4,10 +4,22 @@
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
+      :color="color"
       fixed
       app
     >
       <v-list>
+        <v-list-item>
+        <v-list-item-avatar>
+          <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+        </v-list-item-avatar>
+
+        <v-list-item-content>
+          <v-list-item-title>Admin Pahala Kencana</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
@@ -16,7 +28,8 @@
           exact
         >
           <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon
+            :color="item.color">{{ item.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -36,26 +49,8 @@
       >
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
       <v-toolbar-title>{{ title }}</v-toolbar-title>
       <v-spacer />
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
       <v-btn color="success" @click="kembaligo()">back</v-btn>
     </v-app-bar>
     <v-main>
@@ -105,36 +100,53 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/web'
+          title: 'Home',
+          to: '/'
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title:'Halaman Crud',
-          to: '/admin/createadmin'
+          icon: 'mdi-account',
+          title:'Setting Karyawan',
+          to: '/admin/createadmin',
+          color: 'green',
 
         },
         {
-          icon: 'mdi-apps',
-          title: ' Halaman Jabatan',
-          to: '/admin/createjabatan'
+          icon: 'mdi-briefcase',
+          title: '  Jabatan',
+          to: '/admin/createjabatan',
+          color: 'green',
         },
         {
-          icon: 'mdi-apps',
-          title: 'Halaman Divisi',
-          to: '/admin/createdivisi'
+          icon: 'mdi-briefcase',
+          title: ' Divisi',
+          to: '/admin/createdivisi',
+          color: 'green',
+        },
+        {
+          icon: 'mdi-home',
+          title: 'Provinsi',
+          to: '/admin/createProvinsi',
+          color: 'green',
+        },
+        {
+          icon: 'mdi-home',
+          title: 'Kota',
+          to: '/admin/createKota',
+          color: 'green',
+        },
+        {
+          icon: 'mdi-home',
+          title: 'Kecamatan',
+          to: '/admin/createKec',
+          color:  'green',
         },
         
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'test'
+      title: 'Sistem Data Karyawan',
+      color: 'orange',
     }
   }
 }

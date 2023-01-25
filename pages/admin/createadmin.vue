@@ -16,12 +16,6 @@
               :rules="umurRules"
               v-model="databaru.umur"
             ></v-text-field>
-            <!-- <v-text-field
-              label="Jabatan"
-              single-line
-              :rules="jabatanRules"
-              v-model="databaru.jabatan"
-            ></v-text-field> -->
             <v-select
               v-model="databaru.jabatan"
               :items="djabatanall"
@@ -38,40 +32,36 @@
               label="divisi"
               required
             ></v-select>
+            <v-select
+              v-model="idprovinsiselected"
+              :items="dprovinsiall"
+              item-text="Provinsi"
+              item-value="idProv"
+              label="Provinsi"
+              required
+            ></v-select>
+            <v-select
+              v-model="idkotaselected"
+              :items="filteredKota"
+              item-text="Kota"
+              item-value="idKota"
+              label="Kota"
+              required
+            ></v-select>
+            <v-select
+              v-model="idkotaselected"
+              :items="filteredKecamatan"
+              item-text="Kecamatan"
+              item-value="idKec"
+              label="Kecamatan"
+              required
+            ></v-select>
             <v-btn color="success" @click="validate()">tambah</v-btn>
           </v-form>
         </v-container>
       </v-card>
     </v-dialog>
     <v-btn color="success" @click="bukadialog()">New Data karyawan</v-btn>
-    <!-- <v-simple-table>
-      <template>
-        <thead>
-          <tr>
-            <th class="text-left">No.</th>
-            <th class="text-left">Nama</th>
-            <th class="text-left">Umur</th>
-            <th class="text-left">Jabatan</th>
-            <th class="text-left">Divisi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(data, index) in dkaryawanall" :key="index">
-            <td>{{ index + 1 }}</td>
-            <td>{{ data.nama }}</td>
-            <td>{{ data.umur }}</td>
-            <td>{{ data.jabatan }}</td>
-            <td>{{ data.divisi }}</td>
-            <td>
-              <v-btn color="success" @click="hapusdata(index)">Hapus</v-btn>
-              <v-btn color="primary" @click="editdata1(data, index)">
-                Edit
-              </v-btn>
-            </td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table> -->
     <template>
       <v-text-field
         v-model="search"
@@ -83,19 +73,25 @@
       <v-data-table :headers="headers" 
                     :items="dkaryawanall"
                     sort-by="nama"
-                    :search="search"
-                    :key="index">
+                    :search="search">
         <template v-slot:top>
         </template>
           <template v-slot:[`item.actions`] ="{ item }">
           <v-icon medium class="mr-2" @click="editdata2(item)">mdi-pencil</v-icon>
           <v-icon small @click="hapusdata(item)">mdi-eraser</v-icon>
         </template>
-        <template v-slot:no-data>
-          <v-btn color="primary" @click="initialize">Reset</v-btn>
-        </template>
-
       </v-data-table>
+      <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-card>
+            <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeDelete()">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="confirmhapus">OK</v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
 </template>
     <v-dialog v-model="dialogedit" persistent max-width="600px">
       <v-card>
@@ -120,7 +116,7 @@
                   hint="example of helper text only on focus"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="10" sm="6" md="4">
                 <v-select
                   v-model="editdata.jabatan"
                   :items="djabatanall"
@@ -130,7 +126,7 @@
                   required
                 ></v-select>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="10" sm="6" md="4">
                 <v-select
                   v-model="editdata.divisi"
                   :items="ddivisiall"
@@ -139,6 +135,36 @@
                   label="Divisi"
                   required
                 ></v-select>
+              </v-col>
+              <v-col cols="10" sm="6" md="4">
+              <v-select
+              v-model="idprovinsiselected"
+              :items="dprovinsiall"
+              item-text="Provinsi"
+              item-value="idProv"
+              label="Provinsi"
+              required
+            ></v-select>
+            </v-col>
+            <v-col cols="10" sm="6" md="4">
+            <v-select
+              v-model="editdata.Kota"
+              :items="filteredKota"
+              item-text="Kota"
+              item-value="Kota"
+              label="Kota"
+              required
+            ></v-select>
+            </v-col>
+            <v-col cols="10" sm="6" md="4">
+            <v-select
+              v-model="editdata.Kecamatan"
+              :items="filteredKota"
+              item-text="Kecamatan"
+              item-value="Kecamatan"
+              label="Kecamatan"
+              required
+            ></v-select>
               </v-col>
             </v-row>
           </v-container>
@@ -172,33 +198,61 @@ export default {
     ddivisiall(){
       return this.$store.getters["CruddivisiStore/gettersdatadivisi"];
     },
+
+    dprovinsiall(){
+      return this.$store.getters["ProvinsiStore/gettersProvinsi"];
+    },
+    dkotall(){
+      return this.$store.getters["KotaStore/gettersKota"];
+    },
+
+    dKecall(){
+      return this.$store.getters["KecamatanStore/gettersKecamatan"];
+    },
   },
   data() {
     return {
+      filteredKota:null,
+      filteredKecamatan:null,
       search: '',
-      indexedit: 1,
+      editedIndex: -1,
       valid: true,
       nameRules: [(v) => !!v || "Nama Harus Disii"],
       umurRules: [(v) => !!v || "Umur harus diisi"],
       jabatanRules: [(v) => !!v || "Jabatan harus diisi"],
       divisiRules: [(v) => !!v || "Divisi harus diisi"],
+      idprovinsiselected:"",
+      idkotaselected:"",
 
       databaru: {
         nama: "",
         umur: "",
         jabatan: "",
         divisi: "",
+        idProv: "",
+        idKota: "",
+        idKec: "",
+        Provinsi: "",
+        Kota: "",
+        Kecamatan: "",
       },
       editdata: {
         nama: "",
         umur: "",
         jabatan: "",
         divisi: "",
+        idProv: "",
+        idKota: "",
+        idKecamatan: "",
+        Provinsi: "",
+        Kota: "",
+        Kecamatan: "",
+
       },
 
       dialogedit: false,
       dialogtambahkaryawan: false,
-      
+      dialogDelete: false,
 
       headers: [
           {
@@ -220,16 +274,67 @@ export default {
             value: 'divisi',
           },
           {
+            text: 'Provinsi',
+            value: 'Provinsi',
+          },
+
+          {
+            text: 'Kota',
+            value: 'Kota',
+          },
+          {
+            text: 'Kecamatan',
+            value: 'Kecamatan',
+          },
+          {
             text: 'Actions',
             value: 'actions',
           }
         ],
     };
   },
+  watch:{
+    idprovinsiselected : function(){
+      if (this.idprovinsiselected == "") {
+        return
+      }
+      console.log('beruhah di watch')
+      const datakota = this.dkotall
+      const id = this.idprovinsiselected
+      const filteredKota2 = _.filter(datakota, function(n){ return n.idProv == id})
+      console.log(filteredKota2)
+      this.filteredKota = filteredKota2
+      this.databaru.idProv = filteredKota2[0].idProv
+      this.databaru.Provinsi = filteredKota2[0].Provinsi
+      this.databaru.idKota = filteredKota2[0].idKota
+      this.databaru.Kota = filteredKota2[0].Kota
+      
 
+      
+    },
+
+    idkotaselected : function(){
+      if (this.idkotaselected == "") {
+        return
+      }
+      const idprov = this.databaru.idProv
+      // const idkotan = this.databaru.idKota
+      const datakec = this.dKecall
+      const idkota1 = this.idkotaselected
+      const filteredKecamatan2 = _.filter(datakec, function (o) {return o.idKota == idkota1})
+      const filteredKecamatan3 = _.filter(filteredKecamatan2, function (i) {return i.idProv == idprov})
+      console.log(filteredKecamatan3)
+      this.filteredKecamatan4 = filteredKecamatan2
+      this.filteredKecamatan = filteredKecamatan3
+      this.databaru.idProv = filteredKecamatan3[0].idProv
+      this.databaru.Provinsi = filteredKecamatan3[0].Provinsi
+      this.databaru.idKota = filteredKecamatan3[0].idKota
+      this.databaru.Kota = filteredKecamatan3[0].Kota
+      this.databaru.idKec = filteredKecamatan3[0].idKec
+      this.databaru.Kecamatan = filteredKecamatan3[0].Kecamatan
+    },
+  },
   methods: {
-    
-
     bukadialog() {
       this.dialogtambahkaryawan = true;
     },
@@ -243,7 +348,7 @@ export default {
         //console.log("masuk145");
         this.tambahdata();
       } else {
-        this.$toast.error("ini nampil dulu dah");
+        this.$toast.error("kosong");
       }
     },
 
@@ -257,14 +362,27 @@ export default {
         umur: "",
         jabatan: "",
         divisi: "",
+        idProv: "",
+        idKota:"",
+        idKec:"",
+        Kota: "",
+        Kecamatan: "",
       };
       this.dialogtambahkaryawan = false;
+      this.idprovinsiselected ="";
+      this.idkotaselected = "";
     },
 
     hapusdata(item) {
-      //console.log('line 166 lancar')
-      this.$store.dispatch("CrudkaryawanStore/actionhapusdata", item);
-    },
+            this.editedIndex = this.dkaryawanall.indexOf(item)
+            this.editedItem = Object.assign({}, item)
+            this.dialogDelete = true
+        },
+        confirmhapus() {
+            this.$store.dispatch("CrudkaryawanStore/actionhapusdata", this.editedIndex)
+            console.log(this.editedIndex)
+            this.dialogDelete = false
+        },
 
     editdata2(item) {
       this.indexedit = this.dkaryawanall.indexOf(item)
@@ -272,15 +390,7 @@ export default {
       this.dialogedit = true
     },
 
-    // editdata1(item) {
-    //   //console.log('line182')
-    //   this.dialogedit = true;
-    //   this.editdata.nama = data.nama;
-    //   this.editdata.umur = data.umur;
-    //   this.editdata.jabatan = data.jabatan;
-    //   this.editdata.divisi = data.divisi;
-    //   this.indexedit = index;
-    // },
+
 
     updatedata() {
       const updatedata = {

@@ -85,6 +85,7 @@ export default {
       jabatanRules: [(v) => !!v || "Jabatan harus diisi"],
 
       databaru: {
+        idJabatan: 0,
         jabatan: "",
       },
       editdata: {
@@ -115,12 +116,17 @@ export default {
 
     async tambahdata() {
       //console.log("masuk152");
+      const hitungidjabatan = this.databaru.idJabatan + 1
+      this.databaru.idJabatan = hitungidjabatan
       this.$store.dispatch("CrudjabatanStore/actiontambahdata", this.databaru);
+      this.databaru.idJabatan = this.djabatanall.length
       //console.log('masuk154')
       //console.log('dibawah return 155')
       this.databaru = {
+        idJabatan: "",
         jabatan: "",
       };
+      
       this.dialogtambahjabatan = false;
     },
 

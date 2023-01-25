@@ -2,15 +2,19 @@
 const state = {
     datajabatan: [
         {
+            idJabatan: 1,
             jabatan: 'Staff',
         },
         {
+            idJabatan: 2,
             jabatan: 'Kru',
         },
         {
+            idJabatan: 3,
             jabatan: 'Admin',
         },
         {
+            idJabatan: 4,
             jabatan: 'Manager',
         },
     ]
@@ -30,6 +34,7 @@ const actions = {
                 if (confirm("anda Yakin ?") == true) {
                     commit('tambahdataMutation', payload)
                     setTimeout(() => {
+                        console.log(state.datajabatan)
                         resolve(2)
                     }, 5000);
                 } else {
@@ -49,7 +54,7 @@ const actions = {
                 const datahapus = state.datajabatan;
                 datahapus.splice(payload, 1)
                 commit('hapusdataMutation', datahapus)
-                console.log(state.datajabatan.length)
+                console.log(state.datajabatan)
                 resolve()
             } else {
                 reject()

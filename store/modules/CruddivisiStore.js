@@ -2,18 +2,22 @@
 const state = {
     datadivisi: [
         {
+            idDivisi: 1,
             divisi: 'HRD',
         },
         {
+            idDivisi: 2,
             divisi: 'IT',
         },
         {
+            idDivisi: 3,
             divisi: 'Keuangan',
         },
         {
+            idDivisi: 4,
             divisi: 'Operasional',
         }
-    ]
+    ],
 }
 
 const getters = {
