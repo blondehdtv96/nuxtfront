@@ -1,6 +1,15 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
+  env: {
+    apiKey: "AIzaSyDyT5dAj0FBsE7HYx-wwh8YgciqgT0sW94",
+    authDomain: "pahalanew-f4b6a.firebaseapp.com",
+    projectId: "pahalanew-f4b6a",
+    storageBucket: "pahalanew-f4b6a.appspot.com",
+    messagingSenderId: "246510004999",
+    appId: "1:246510004999:web:e09822c9df3c10810973a2",
+    measurementId: "G-9ZKB55K1F6"
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s',
@@ -22,6 +31,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '~/plugins/auth.js' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
