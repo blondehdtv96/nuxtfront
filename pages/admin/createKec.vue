@@ -13,7 +13,7 @@
                   required
                 ></v-select>
                 <v-select
-                  v-model="databaru.Kota"
+                  v-model="idkotaselected.Kota"
                   :items="filteredKota"
                   item-text="Kota"
                   item-value="Kota"
@@ -214,10 +214,10 @@
       const id = this.idkotaselected
       const filteredKec1 = _.filter(datakec, function(o){ return o.idKota == id})
       const filteredKec2 = _.filter(filteredKec1, function(i){ return i.idKec == dataidkota})
-      console.log(filteredKec1)
-      // this.filteredKec = filteredKec1
-      // this.filteredkeca = filter
-      // this.databaru.idKota = 
+      console.log(filteredKec2)
+      this.filteredKec = filteredKec1
+      this.filteredkeca = filteredKec2
+      this.databaru.idKota = filteredKec2[0].idKota
 
 
     },

@@ -1,37 +1,6 @@
+import { db } from "~/services/fireinit.js";
 const state = {
-    Provinsi: [
-        {
-            idProv: "p1",
-            Provinsi: "Jawa Barat",
-
-        },
-        {
-            idProv: "p2",
-            Provinsi: "Jawa Tengah",
-
-        },
-        {
-            idProv: "p3",
-            Provinsi: "Jawa Timur",
-
-        },
-        {
-            idProv: "p4",
-            Provinsi: "DKI Jakarta",
-        },
-        // {
-        //     idProv: 5,
-        //     Provinsi: "Sumatera Utara",
-        // },
-        // {
-        //     idProv: 6,
-        //     Provinsi: "Sumatera Utara",
-        // },
-        // {
-        //     idProv: 7, 
-        //     Provinsi: "Kalimantan Tengah"
-        // },
-    ],
+    Provinsi: [],
 }
 
 const getters = {
@@ -41,12 +10,16 @@ const getters = {
 }
 
 const actions = {
-    actiontambahProvinsi({ commit }, payload) {
+    actiontambahProvinsi({  dispatch }, payload) {
         //console.log('masuk38 crud store')
         return new Promise(async (resolve, reject) => {
             try {
                 if (confirm("anda Yakin ?") == true) {
-                    commit('tambahProvinsiMutation', payload)
+                    await db.collection("provinsi").doc(payload.idProv).set({
+                        idProv: payload.idProv,
+                        Provinsi: payload.Provinsi
+                      });
+                    dispatch("actiontampilprov")
                     setTimeout(() => {
                         resolve()
                     }, 2000);
@@ -59,6 +32,27 @@ const actions = {
         })
     },
 
+    async actiontampilprov ({ commit, state }, payload) {
+        state.Provinsi = []
+        return await db
+        .collection("provinsi")
+        .get()
+        .then((doc) => {
+          if (doc.size > 0) {
+            doc.forEach((doc2) => {
+              const data = _.assign({ id: doc2.id }, doc2.data()); // assign untuk gabungin 2 object
+              commit('tampilprovinsiMutation', data)
+            });
+          } else {
+            console.log("data kosong");
+          }
+        })
+        .catch((error) => {
+          console.log("terjadi error tampildataprov");
+          console.log(error);
+        });
+    },
+    
     actionhapusdata({ commit }, payload) {
         return new Promise((resolve, reject) => {
             try {
@@ -103,6 +97,9 @@ const mutations = {
     },
     updateProvinsiMutation(state, payload) {
         state.Provinsi = payload
+    },
+    tampilprovinsiMutation(state, payload) {
+        state.Provinsi.push(payload)
     },
 }
 
