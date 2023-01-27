@@ -14,7 +14,10 @@
     <v-btn color="success" @click="bukadialog()">Tambah Provinsi</v-btn>
     <template>
       <v-col cols="12">
-        <v-data-table :headers="headers" :items="dataprovinsi" sort-by="nama">
+        <v-data-table
+         :headers="headers" 
+         :items="dataprovinsi" 
+         sort-by="nama">
         </v-data-table>
       </v-col>
     </template></v-container>

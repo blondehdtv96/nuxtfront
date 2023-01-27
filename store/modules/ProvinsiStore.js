@@ -52,38 +52,7 @@ const actions = {
           console.log(error);
         });
     },
-    
-    actionhapusdata({ commit }, payload) {
-        return new Promise((resolve, reject) => {
-            try {
-                commit('hapusProvinsiMutation', payload)
-                resolve(1)
-            } catch (error) {
-                reject(0)
-            }
-        })
-    },
 
-    actionupdatedata({ commit, state }, payload) {
-        console.log('tampil line 81')
-        return new Promise(async (resolve, reject) => {
-            console.log('line 83 oke')
-            try {
-                if (confirm("mau update data ?") == true) {
-                    console.log('tampil line 85')
-                    const dataedit = state.Provinsi
-                    console.log('tampil line 88')
-                    const updatedata = Object.assign(dataedit[payload.index], payload.dataedit)
-                    console.log(dataedit)
-                    //console.log(dataedit)
-                    commit('updateProvinsiMutation', dataedit)
-                }
-                resolve(1)
-            } catch (HandleError) {
-                reject('tenang aja')
-            }
-        })
-    },
 
 }
 

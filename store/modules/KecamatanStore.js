@@ -1,45 +1,6 @@
+import { db } from "~/services/fireinit.js";
 const state = {
-    Kecamatan: [
-        {
-            idProv: 1,
-            idKota: 1,
-            idKec: 1,
-            Provinsi: "Jawa Barat",
-            Kota: "Bandung",
-            Kecamatan: "Soreang",
-
-        },
-        {
-            idProv: 1,
-            idKota: 2,
-            idKec: 2,
-            Provinsi: "Jawa Barat",
-            Kota: "Bekasi",
-            Kecamatan: "Medan Satria",
-
-        },
-        {
-            idProv: 2,
-            idKota: 1,
-            idKec: 3,
-            Provinsi: "Jawa Tengah",
-            Kota: "Sragen",
-            Kecamatan: "Desa Picul"
-
-
-        },
-        {
-            idProv: 2,
-            idKota: 2,
-            idKec: 4,
-            Provinsi: "Jawa Tengah",
-            Kota: "Solo",
-            Kecamatan: "Desa Lupic"
-
-
-        },
-
-    ],
+    Kecamatan: [],
 }
 
 const getters = {
@@ -49,12 +10,20 @@ const getters = {
 }
 
 const actions = {
-    actiontambahkecamatan({ commit }, payload) {
+    actiontambahkecamatan({ dispatch }, payload) {
         //console.log('masuk38 crud store')
         return new Promise(async (resolve, reject) => {
             try {
                 if (confirm("anda Yakin ?") == true) {
-                    commit('tambahkecamatanMutation', payload)
+                    await db.collection("Kecamatan").doc(payload.idKecamatan).set({
+                        idprov: payload.idprov,
+                        idKota: payload.idKota,
+                        idKecamatan: payload.idKecamatan,
+                        Provinsi: payload.Provinsi,
+                        Kota: payload.Kota,
+                        Kecamatan: payload.Kecamatan,
+                    });
+                    dispatch("actiontampilkecamatan")
                     setTimeout(() => {
                         resolve(2)
                     }, 5000);
@@ -67,37 +36,28 @@ const actions = {
         })
     },
 
-    actionupdatedata({ commit, state }, payload) {
-        console.log('tampil line 81')
-        return new Promise(async (resolve, reject) => {
-            console.log('line 83 oke')
-            try {
-                if (confirm("mau update data ?") == true) {
-                    console.log('tampil line 85')
-                    const dataedit = state.Kecamatan
-                    console.log('tampil line 88')
-                    const updatedata = Object.assign(dataedit[payload.index], payload.dataedit)
-                    console.log(dataedit)
-                    //console.log(dataedit)
-                    commit('updatekecamatanMutation', dataedit)
+    async actiontampilkecamatan({ commit, state }) {
+        state.Kota = []
+        return await db
+            .collection("Kecamatan")
+            .get()
+            .then((doc) => {
+                if (doc.size > 0) {
+                    doc.forEach((doc2) => {
+                        const data = _.assign({ id: doc2.id }, doc2.data()); // assign untuk gabungin 2 object
+                        commit('tampilkecamatanMutation', data)
+                    });
+                } else {
+                    console.log("data kosong");
                 }
-                resolve(1)
-            } catch (HandleError) {
-                reject('tenang aja')
-            }
-        })
+            })
+            .catch((error) => {
+                console.log("terjadi error tampildatakecamatan");
+                console.log(error);
+            });
     },
 
-    actionhapusdata({ commit }, payload) {
-        return new Promise((resolve, reject) => {
-            try {
-                commit('hapuskecamatanMutation', payload)
-                resolve(1)
-            } catch (error) {
-                reject(0)
-            }
-        })
-    },
+
 }
 
 const mutations = {
@@ -111,6 +71,9 @@ const mutations = {
 
     hapuskecamatanMutation (state, payload) {
         state.Kecamatan = payload
+    },
+    tampilkecamatanMutation(state, payload){
+        state.Kecamatan.push(payload)
     },
 }
 
