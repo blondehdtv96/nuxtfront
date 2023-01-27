@@ -3,9 +3,9 @@
     <v-dialog v-model="dialogtambahprov" width="500">
       <v-card justify="center" width="500">
         <v-container>
-          <v-text-field label="id Provinsi" single-line item-text="idProv" item-value="idProv"
-            v-model="databaru.idProv"></v-text-field>
-          <v-text-field label="Nama Provinsi" single-line item-text="Provinsi" item-value="Provinsi"
+          <!-- <v-text-field label="id Provinsi" single-line item-text="idProv" item-value="idProv"
+            v-model="databaru.idProv"></v-text-field> -->
+          <v-text-field label="Nama Provinsi" single-line item-text="Provinsi" item-value="idProv"
             v-model="databaru.Provinsi"></v-text-field>
           <v-btn color="success" @click="tambahprovinsi()">tambah</v-btn>
         </v-container>
@@ -14,10 +14,7 @@
     <v-btn color="success" @click="bukadialog()">Tambah Provinsi</v-btn>
     <template>
       <v-col cols="12">
-        <v-data-table
-         :headers="headers" 
-         :items="dataprovinsi" 
-         sort-by="nama">
+        <v-data-table :headers="headers" :items="dataprovinsi" sort-by="nama">
         </v-data-table>
       </v-col>
     </template></v-container>
@@ -47,8 +44,7 @@ export default {
         idProv: "",
         Provinsi: "",
       },
-      Provinsi: [],
-
+      provinsi: [],
       dialogtambahprov: false,
     };
   },
@@ -57,7 +53,6 @@ export default {
 
   mounted() {
     this.tampildataprov();
-
   },
 
   methods: {
@@ -67,11 +62,17 @@ export default {
 
     async tambahprovinsi() {
       try {
+        const x = this.dataprovinsi.length 
+        const xx = x + 1
+        const id = "P" + xx
+        console.log(x)
+        this.databaru.idProv = id
         this.$store.dispatch("ProvinsiStore/actiontambahProvinsi", this.databaru);
         this.databaru = { idProv: "", Provinsi: "" };
       } catch (error) {
         console.log(error);
       }
+      // this.databaru.idProv = this.dataprovinsi.length
       this.dialogtambahprov = false;
     },
 
