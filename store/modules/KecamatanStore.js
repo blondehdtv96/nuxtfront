@@ -36,10 +36,33 @@ const actions = {
         })
     },
 
+
     async actiontampilkecamatan({ commit, state }) {
-        state.Kota = []
+        state.Kecamatan = []
         return await db
             .collection("Kecamatan")
+            .get()
+            .then((doc) => {
+                if (doc.size > 0) {
+                    doc.forEach((doc2) => {
+                        const data = _.assign({ id: doc2.id }, doc2.data()); // assign untuk gabungin 2 object
+                        commit('tampilkecamatanMutation', data)
+                    });
+                } else {
+                    console.log("data kosong");
+                }
+            })
+            .catch((error) => {
+                console.log("terjadi error tampildatakecamatan");
+                console.log(error);
+            });
+    },
+
+    async actiontampilquerykecamatan({ commit, state },payload) {
+        state.Kecamatan = []
+        return await db
+            .collection("Kecamatan")
+            .where("idKota", "==", payload)
             .get()
             .then((doc) => {
                 if (doc.size > 0) {

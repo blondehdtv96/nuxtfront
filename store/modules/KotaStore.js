@@ -54,6 +54,29 @@ const actions = {
             });
     },
 
+    async actiontampilquerykota ({ commit, state}, payload) {
+        state.Kota = []
+        return await db
+            .collection("Kota")
+            .where("idProv", "==", payload)
+            .get()
+            .then((doc) => {
+                if (doc.size > 0) {
+                    doc.forEach((doc2) => {
+                        const data = _.assign({ id: doc2.id }, doc2.data()); // assign untuk gabungin 2 object
+                        commit('tampilkotaMutation', data)
+                    });
+                } else {
+                    console.log("data kosong");
+                }
+            })
+            .catch((error) => {
+                console.log("terjadi error tampildataprov");
+                console.log(error);
+            });
+
+    },
+
 
 
 }

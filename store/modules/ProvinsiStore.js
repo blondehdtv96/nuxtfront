@@ -32,7 +32,7 @@ const actions = {
         })
     },
 
-    async actiontampilprov({ commit, state }, payload) {
+    async actiontampilprov({ commit, state }) {
         state.Provinsi = []
         return await db
             .collection("provinsi")

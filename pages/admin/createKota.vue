@@ -3,7 +3,7 @@
     <v-dialog v-model="dialogtambahkota" width="500">
       <v-card justify="center" width="500">
         <v-container>
-          <v-select v-model="idselect" :items="dataprovinsi" item-text="Provinsi" item-value="idProv" label="Provinsi"
+          <v-select v-model="databaru.Provinsi" :items="dataprovinsi" item-text="Provinsi" item-value="Provinsi" label="Provinsi"
             required></v-select>
           <v-text-field label="Nama Kota" single-line item-text="Kota" item-value="idKota"
             v-model="databaru.Kota"></v-text-field>
@@ -22,6 +22,7 @@
         
     
 <script>
+// import { db } from "~/services/fireinit.js";
 import _ from "lodash";
 export default {
   computed: {
@@ -34,7 +35,6 @@ export default {
   },
   data() {
     return {
-      idselect: null,
       headers: [
         {
           text: "ID Provinsi",
@@ -60,25 +60,12 @@ export default {
         Provinsi: "",
         Kota: "",
       },
-      Kota: [],
+      kota: [],
 
       dialogtambahkota: false,
     };
   },
 
-  watch: {
-    idselect: function () {
-      if (this.idselect == "") {
-        return
-      }
-      const dataprov = this.dataprovinsi
-      const id = this.idselect
-      const filterprov1 = _.filter(dataprov, function (n) { return n.idProv == id })
-      this.filteredprov = filterprov1
-      this.databaru.idProv = filterprov1[0].idProv
-      this.databaru.Provinsi = filterprov1[0].Provinsi
-    },
-  },
 
   mounted() {
     this.tampildataprovinsi();
@@ -92,11 +79,15 @@ export default {
 
     async tambahkota() {
       try {
-        const x = this.datakota.length 
+        const x = this.datakota.length
+        const idprov = this.dataprovinsi.length
+        const idprov1 = idprov + 1
+        const idprov2 = "P" + idprov1
         const xx = x + 1
         const id = "K" + xx
         console.log(x)
         this.databaru.idKota = id
+        this.databaru.idProv = idprov2
         this.$store.dispatch("KotaStore/actiontambahkota", this.databaru);
         this.databaru = { idProv: "", idKota: "", Provinsi: "", Kota: "", };
       } catch (error) {
