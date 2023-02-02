@@ -3,7 +3,7 @@
     <v-dialog v-model="dialogtambahkota" width="500">
       <v-card justify="center" width="500">
         <v-container>
-          <v-select v-model="databaru.Provinsi" :items="dataprovinsi" item-text="Provinsi" item-value="Provinsi" label="Provinsi"
+          <v-select v-model="idprovinsiselected" :items="dataprovinsi" item-text="Provinsi" item-value="idProv" label="Provinsi"
             required></v-select>
           <v-text-field label="Nama Kota" single-line item-text="Kota" item-value="idKota"
             v-model="databaru.Kota"></v-text-field>
@@ -61,7 +61,7 @@ export default {
         Kota: "",
       },
       kota: [],
-
+      idprovinsiselected: "",
       dialogtambahkota: false,
     };
   },
@@ -72,6 +72,19 @@ export default {
     this.tampildatakota();
   },
 
+  watch:{
+        idprovinsiselected : function(){
+        if(this.idprovinsiselected == ""){
+          return
+        }
+        const propinsi = this.dataprovinsi
+        const idselectpropinsi = this.idprovinsiselected
+        const selectidprop = _.filter(propinsi, function(d){ return d.idProv == idselectpropinsi})
+        this.databaru.idProv = selectidprop[0].idProv
+        this.databaru.Provinsi = selectidprop[0].Provinsi
+      },
+    },
+    
   methods: {
     bukadialog() {
       this.dialogtambahkota = true;
@@ -80,19 +93,15 @@ export default {
     async tambahkota() {
       try {
         const x = this.datakota.length
-        const idprov = this.dataprovinsi.length
-        const idprov1 = idprov + 1
-        const idprov2 = "P" + idprov1
         const xx = x + 1
         const id = "K" + xx
-        console.log(x)
         this.databaru.idKota = id
-        this.databaru.idProv = idprov2
         this.$store.dispatch("KotaStore/actiontambahkota", this.databaru);
         this.databaru = { idProv: "", idKota: "", Provinsi: "", Kota: "", };
       } catch (error) {
         console.log(error);
       }
+      this.idprovinsiselected = "",
       this.idselect = "";
       this.dialogtambahkota = false;
     },
