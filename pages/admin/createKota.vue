@@ -62,7 +62,7 @@ export default {
         Kota: "",
       },
       kota: [],
-
+      idprovinsiselected: "",
       dialogtambahkota: false,
     };
   },
@@ -73,6 +73,7 @@ export default {
     this.tampildatakota();
   },
 
+<<<<<<< HEAD
 
 watch:{
 
@@ -89,6 +90,21 @@ watch:{
     },
 },
 
+=======
+  watch:{
+        idprovinsiselected : function(){
+        if(this.idprovinsiselected == ""){
+          return
+        }
+        const propinsi = this.dataprovinsi
+        const idselectpropinsi = this.idprovinsiselected
+        const selectidprop = _.filter(propinsi, function(d){ return d.idProv == idselectpropinsi})
+        this.databaru.idProv = selectidprop[0].idProv
+        this.databaru.Provinsi = selectidprop[0].Provinsi
+      },
+    },
+    
+>>>>>>> f1156d85521aa52301309845f468850f4e9bb8b9
   methods: {
     bukadialog() {
       this.dialogtambahkota = true;
@@ -100,13 +116,21 @@ watch:{
         const xx = x + 1
         const id = "K" + xx
         this.databaru.idKota = id
+<<<<<<< HEAD
 
+=======
+>>>>>>> f1156d85521aa52301309845f468850f4e9bb8b9
         this.$store.dispatch("KotaStore/actiontambahkota", this.databaru);
         this.databaru = { idProv: "", idKota: "", Provinsi: "", Kota: "", };
       } catch (error) {
         console.log(error);
       }
+<<<<<<< HEAD
       this.idprovinsiselected = "";
+=======
+      this.idprovinsiselected = "",
+      this.idselect = "";
+>>>>>>> f1156d85521aa52301309845f468850f4e9bb8b9
       this.dialogtambahkota = false;
     },
     // async tampildatakota() {
