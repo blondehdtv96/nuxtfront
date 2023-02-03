@@ -13,10 +13,10 @@
                   required
                 ></v-select>
                 <v-select
-                  v-model="databaru.Kota"
+                  v-model="idkotaselect"
                   :items="datakota"
                   item-text="Kota"
-                  item-value="Kota"
+                  item-value="idKota"
                   label="Kota"
                   required
                 ></v-select>
@@ -69,9 +69,17 @@ import _ from "lodash";
       return {
         valid: true,
         idprovinsiselected: "",
-        q1: null,
-        readdata: null,
+        idkotaselect: "",
+
       headers: [
+          {
+            text: 'id Kota',
+            value: 'idKota'
+          },
+          {
+            text: 'id Kecamatan',
+            value: 'idKecamatan',
+          },
           {
             text: 'Provinsi',
             value: 'Provinsi',
@@ -79,14 +87,6 @@ import _ from "lodash";
           {
             text: 'Kota',
             value: 'Kota',
-          },
-          {
-            text: 'id Kota',
-            value: 'idKota'
-          },
-          {
-            text: 'id Kecamatan',
-            value: 'idKec',
           },
           {
             text: 'Kecamatan',
@@ -114,11 +114,25 @@ import _ from "lodash";
       if(this.idprovinsiselected == ""){
         return
       } 
-
       const provref = this.dataprovinsi
-      const idkota1 = this.idprovinsiselected
-      this.databaru.Provinsi = provref[0].Provinsi
-      this.$store.dispatch("KotaStore/actiontampilquerykota", idkota1);
+      const selectidprov = this.idprovinsiselected
+      const selectprov = _.filter(provref, function(b){return b.idProv == selectidprov})
+      this.databaru.idProv = selectprov[0].idProv
+      this.databaru.Provinsi = selectprov[0].Provinsi
+      this.$store.dispatch("KotaStore/actiontampilquerykota", selectidprov);
+    },
+
+    idkotaselect : async function(){
+      if(this.idkotaselect == ""){
+        return
+      } 
+      const kotareferensi = this.datakota
+      const selectidkota = this.idkotaselect
+      console.log(selectidkota)
+      const selectkota = _.filter(kotareferensi, function(a){return a.idKota == selectidkota})
+      this.databaru.idKota = selectkota[0].idKota
+      this.databaru.Kota = selectkota[0].Kota
+      // this.$store.dispatch("KotaStore/actiontampilquerykota", selectidkota);
     },
   },
 
@@ -137,23 +151,18 @@ import _ from "lodash";
       async tambahkecamatan(){
         //console.log()
         try {
-
-        const dataprov = this.dataprovinsi
-        const idkec = this.datakecamatan.length
-        const idtambah1 = idkec + 1
-        const modiftambahkc = "KC" + idtambah1
-        this.databaru.idKecamatan = modiftambahkc
-        // this.databaru.Provinsi = dataprov
-        
-
-
-          this.$store.dispatch("KecamatanStore/actiontambahkecamatan", this.databaru);
-          this.databaru = { idProv : "", idKota : "", idKecamatan : "", Provinsi : "", Kota : "", Kecamatan : "" };
+        const refkecamatan = this.datakecamatan.length 
+        const reftambah1 = refkecamatan + 1
+        const refgabung = "KC" + reftambah1
+        this.databaru.idKecamatan = refgabung
+        this.$store.dispatch("KecamatanStore/actiontambahkecamatan", this.databaru);
+        this.databaru = { idProv : "", idKota : "", idKecamatan : "", Provinsi : "", Kota : "", Kecamatan : "" };
         } catch (error){
           console.log(error)
         }
 
         this.idprovinsiselected = "";
+        this.idkotaselect = "";
         this.dialogtambahKec = false;
       },
 

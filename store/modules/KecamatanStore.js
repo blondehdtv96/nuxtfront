@@ -11,27 +11,31 @@ const getters = {
 
 const actions = {
     actiontambahkecamatan({ dispatch }, payload) {
-        //console.log('masuk38 crud store')
+        console.log("14")
         return new Promise(async (resolve, reject) => {
+            console.log("16")
             try {
                 if (confirm("anda Yakin ?") == true) {
-                    await db.collection("Kecamatan").doc(payload.idKecamatan).set({
-                        idprov: payload.idprov,
+                    console.log("19")
+                   await db.collection("Kecamatan").doc(payload.idKecamatan).set({
+                        idProv: payload.idProv,
                         idKota: payload.idKota,
                         idKecamatan: payload.idKecamatan,
                         Provinsi: payload.Provinsi,
                         Kota: payload.Kota,
                         Kecamatan: payload.Kecamatan,
                     });
+                    console.log("49")
                     dispatch("actiontampilkecamatan")
                     setTimeout(() => {
-                        resolve(2)
-                    }, 5000);
+                        resolve()
+                    }, 2000);
                 } else {
-                    reject(2)
+                    console.log("35")
+                    reject()
                 }
             } catch (err) {
-                reject(2)
+                reject()
             }
         })
     },

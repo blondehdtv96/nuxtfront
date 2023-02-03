@@ -1,62 +1,85 @@
 <template>
   <v-container>
-    <v-dialog v-model="dialogtambahkaryawan" width="500">
-      <v-card justify="center" width="500">
+    <v-dialog v-model="dialogtambahkaryawan" width="600" height="200">
+      <v-card justify="center" width="600" height="320">
         <v-container>
           <v-form ref="form" v-model="valid" lazy-validation>
+            <v-row>
+            <v-col cols="6">
             <v-text-field
               label="Nama"
-              single-line
               :rules="nameRules"
               v-model="databaru.nama"
-            ></v-text-field>
+              clearable
+            >
+          </v-text-field>
+          </v-col>
+          <v-col cols="6">
             <v-text-field
               label="Umur"
-              single-line
               :rules="umurRules"
               v-model="databaru.umur"
+              clearable
             ></v-text-field>
-            <v-select
+          </v-col>
+          <v-col cols="4">
+            <v-autocomplete
               v-model="databaru.jabatan"
               :items="djabatanall"
               item-text="jabatan"
               item-value="jabatan"
               label="Jabatan"
               required
-            ></v-select>
-            <v-select
+              clearable
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="4">
+            <v-autocomplete
               v-model="databaru.divisi"
               :items="ddivisiall"
               item-text="divisi"
               item-value="divisi"
-              label="divisi"
+              label="Divisi"
               required
-            ></v-select>
-            <v-select
+              clearable
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="4">
+            <v-autocomplete
               v-model="idprovinsiselected"
               :items="dprovinsiall"
               item-text="Provinsi"
               item-value="idProv"
               label="Provinsi"
               required
-            ></v-select>
-            <v-select
+              clearable
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="4">
+            <v-autocomplete
               v-model="idkotaselected"
               :items="filteredKota"
               item-text="Kota"
               item-value="idKota"
               label="Kota"
               required
-            ></v-select>
-            <v-select
+              clearable
+            ></v-autocomplete>
+          </v-col>
+          <v-col cols="8">
+            <v-autocomplete
               v-model="idkotaselected"
               :items="filteredKecamatan"
               item-text="Kecamatan"
               item-value="idKec"
               label="Kecamatan"
               required
-            ></v-select>
-            <v-btn color="success" @click="validate()">tambah</v-btn>
+              clearable
+            ></v-autocomplete>
+          </v-col>
+            <v-btn color="success" @click="validate()"
+            >tambah</v-btn>
+          </v-row>
           </v-form>
         </v-container>
       </v-card>
